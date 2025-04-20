@@ -1,0 +1,123 @@
+body{
+    font-family: Arial, sans-serif;
+    background-color: hsl(0, 0%, 0%);
+} 
+
+h1{
+    color: hsl(199, 92%, 61%);
+} 
+
+form{
+    background-color: hsl(0, 0%, 11%);
+    text-align: center;
+    max-width: 350px; 
+    margin: auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px hsla(0, 0%, 0%, 0.31); 
+    position: relative;
+    z-index: 2;
+}  
+
+#particles-js {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100%;
+    height: 100%; 
+    z-index: 0;
+}   
+
+
+#textBox{
+    width: 50%;
+    text-align: center;
+    font-size: 1em;
+    border: 2px solid   hsla(0, 0%, 0%, 0.811);
+    border-radius: 20px;
+    margin-bottom: 15px; 
+    padding: 10px 15px;
+} 
+
+label{
+    font-size: 1.5em;
+    font-weight: bold;
+} 
+
+button{
+    margin-top: 15px;
+    background-color: hsl(115, 78%, 62%);
+    color: snow;
+    font-size: 1.5em;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+} 
+
+button:hover{
+    background-color:  hsl(115, 78%, 72%);
+} 
+
+#result{
+    font-size: 1.75em;
+    font-weight: bold; 
+    color: hsl(199, 92%, 61%);
+} 
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(0, 3%, 6%);
+    color: white;
+    padding: 10px 30px;
+    height: 80px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+  
+
+  .navbar nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin-right: 100px;
+    padding: 0;
+  }
+  
+  .navbar nav ul li a {
+    text-decoration: none;
+    color: yellow;
+    font-weight: bold;
+  }
+  
+  .navbar nav ul li a:hover {
+    color: lightyellow;
+  }
+  
+  .container {
+    padding-top: 120px; /* Push page content below the fixed navbar */
+  }
+  
+  .logo-title{
+    display: flex;
+    align-items: center; 
+    color: hsl(199, 92%, 61%);
+    animation: transition 1s ease-in-out forwards;
+  } 
+
+
+  @keyframes transition {
+    from{
+        transform: translateX(-30px);
+        opacity: 0;
+    } 
+
+    to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}

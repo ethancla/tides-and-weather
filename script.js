@@ -1,53 +1,104 @@
-// function convert() {
-//     const result = document.getElementById("result"); 
-//     const url = document.getElementById("url").value.trim();
+// const { type } = require("express/lib/response");
 
-//     if (!url) {
-//         result.textContent = "Error: Please enter a website.";
-//         result.style.color = "red";
-//         return;
-//     }
+// function fetchTideData(stationID) {
+//     const url = 'http://127.0.0.1:5000/api'
+
+//     const endpoints = [
+//         { type: 'water-level', name: 'Water Level' },
+//         { type: 'tide-prediction', name: 'Tide Prediction' },
+//         { type: 'water-temperature', name: 'Water Temperature'}
+//     ]
+
+//     const fetchPromises = endpoints.map(endpoint => 
+//         fetch(`${url}/${endpoints.type}/${stationID}`)
+//             .then(response => response.json())
+//             .then(data => ({type: endpoint.name, data: data}))
+//             .catch(error => ({ type: endpoint.name, error: error.message }))
+//     )
 
 //     // Send request to Flask backend
-//     fetch(`http://127.0.0.1:5000/check?url=${encodeURIComponent(url)}`)
-//         .then(response => response.json())
-//         .then(data => {
-// @@ -17,16 +18,21 @@
-//                 result.textContent = "Error: " + data.error;
-//                 result.style.color = "red";
-//             } else if (data.statistics && data.statistics.co2) {
-//                 // ✅ Check if `data.statistics.co2` exists before using it # LMAO
-//                 result.textContent = `Carbon Emissions: ${data.statistics.co2}g CO2 per visit`;
-//                 result.style.color = "green";
-//                 // ✅ Display carbon emissions result
-//                 result.innerHTML = `
-//                     <strong>Website:</strong> ${data.url} <br>
-//                     <strong>Carbon Emissions:</strong> ${data.statistics.co2.grid.grams}g CO2 per visit <br>
-//                     <strong>Rating:</strong> ${data.rating} <br>
-//                     <strong>Greener Than:</strong> ${Math.round(data.cleanerThan * 100)}% of tested sites
-//                 `;
-//                 result.style.color = "white"; // Keep it readable
-//             } else {
-//                 result.textContent = "No carbon footprint data available.";
-//                 result.style.color = "orange";
-//             }
+//     Promise.all(fetchPromises)
+//         .then(responses => {
+//             let htmlOutput = `<h2>Station ${stationID} Data</h2>`;
+
+//             responses.forEach(result => {
+//                 htmlOutput += `<div class="data-section">
+//                     <h3>${result.type}</h3>`;
+                
+//                 if (result.error || (result.data && result.data.error)) {
+//                     htmlOutput += `<p class="error">Error: ${result.error || result.data.error}</p>`;
+//                 } else {
+//                     // Format based on data type
+//                     if (result.data && result.data.data && result.data.data.length > 0) {
+//                         const dataPoint = result.data.data[0];
+//                         htmlOutput += `
+//                             <p>Value: ${dataPoint.v} ${result.data.metadata?.units || ''}</p>
+//                             <p>Time: ${dataPoint.t}</p>`;
+//                     } else {
+//                         htmlOutput += `<p>No data available</p>`;
+//                     }
+//                 }
+                
+//                 htmlOutput += `</div>`;
+//             });
+            
+//             resultElement.innerHTML = htmlOutput;
 //         })
 //         .catch(error => {
 //             result.textContent = "Error fetching data.";
 //             result.style.color = "red";
 //             console.error("Fetch error:", error);
-//         });
-particlesJS("particles-js", {
-    particles: {
-        number: { value: 100, density: {enable: true, value_area: 800}},
-        color: { value: "#00ffcc"}, 
-        size: { value: 3}, 
-        move: {enable: true, speed: 2}
-    }, 
-    interactivity: {
-        events: { onhover: { enable: true, mode: "repulse"}},
-        modes: { repulse: {distance: 100}}
-    }, 
-    retina_detect: true
-}); 
+//         }
+//     );
+// }
 
+
+function fetchTideData(stationID) {
+    const url = 'http://127.0.0.1:5000/api';
+
+    const endpoints = [
+        { type: 'water-level', name: 'Water Level' },
+        { type: 'tide-prediction', name: 'Tide Prediction' },
+        { type: 'water-temperature', name: 'Water Temperature' }
+    ];
+
+    const fetchPromises = endpoints.map(endpoint =>
+        fetch(`${url}/${endpoint.type}/${stationID}`)
+            .then(response => response.json())
+            .then(data => ({ type: endpoint.name, data: data }))
+            .catch(error => ({ type: endpoint.name, error: error.message }))
+    );
+
+    Promise.all(fetchPromises)
+        .then(responses => {
+            let htmlOutput = `<h2>Station ${stationID} Data</h2>`;
+
+            responses.forEach(result => {
+                htmlOutput += `<div class="data-section">
+                    <h3>${result.type}</h3>`;
+
+                if (result.error || (result.data && result.data.error)) {
+                    htmlOutput += `<p class="error">Error: ${result.error || result.data.error}</p>`;
+                } else {
+                    if (result.data && result.data.data && result.data.data.length > 0) {
+                        const dataPoint = result.data.data[0];
+                        htmlOutput += `
+                            <p>Value: ${dataPoint.v} ${result.data.metadata?.units || ''}</p>
+                            <p>Time: ${dataPoint.t}</p>`;
+                    } else {
+                        htmlOutput += `<p>No data available</p>`;
+                    }
+                }
+
+                htmlOutput += `</div>`;
+            });
+
+            document.getElementById("result").innerHTML = htmlOutput;
+        })
+        .catch(error => {
+            const result = document.getElementById("result");
+            result.textContent = "Error fetching data.";
+            result.style.color = "red";
+            console.error("Fetch error:", error);
+        });
+}

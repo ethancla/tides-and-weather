@@ -1,13 +1,13 @@
-# from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 import requests
 # import urllib.parse
-# from flask_cors import CORS
+from flask_cors import CORS
 import json
 from datetime import datetime, timedelta
 
 # print("Hello World!") 
-# app = Flask(__name__)
-# CORS(app)
+app = Flask(__name__)
+CORS(app)
 
 # @app.route('/check', methods=['GET'])
 def get_noaa_data(station_id, product):
@@ -22,7 +22,6 @@ def get_noaa_data(station_id, product):
     #     today = datetime.now()
     #     end_date = today.strftime("%Y%m%d")
 
-    # api_url = "https://api.tidesandcurrents.noaa.gov/api/prod/#DataAPIResponse"
     api_url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
 
     params = {
@@ -55,6 +54,18 @@ def get_noaa_data(station_id, product):
     else:
         return {"error": "Failed to fetch data from API"}, 500
 
+@app.route('/api/water-level/<station_id>', methods=['GET'])
+def get_water_level(station_id):
+    return jsonify(get_noaa_data(station_id, "water_level"))
+
+@app.route('/api/tide-prediction/<station_id>', methods=['GET'])
+def get_water_level(station_id):
+    return jsonify(get_noaa_data(station_id, "predictions"))
+
+@app.route('/api/water-temperature/<station_id>', methods=['GET'])
+def get_water_level(station_id):
+    return jsonify(get_noaa_data(station_id, "water_temperature"))
+
 if __name__ == '__main__':
     station_id = '9414290'
 
@@ -66,7 +77,7 @@ if __name__ == '__main__':
 
     temperature_data = get_noaa_data(station_id, "water_temperature")
     print(json.dumps(temperature_data, indent=2))
-    # app.run(debug=True)
+    app.run(debug=True)
 
 # response = requests.get(f"")
 
