@@ -1,6 +1,6 @@
 function fetchTideData(stationID) {
     // const url = 'http://127.0.0.1:5000/api';
-    const url = 'https://hackdavis25.onrendor.com';
+    const url = 'https://hackdavis25.onrendor.com/api';
 
     const endpoints = [
         { type: 'water-level', name: 'Water Level' },
@@ -23,17 +23,16 @@ function fetchTideData(stationID) {
                 htmlOutput += `<div class="data-section">
                     <h3>${result.type}</h3>`;
 
-                if (result.error || (result.data && result.data.error)) {
-                    htmlOutput += `<p class="error">Error: ${result.error || result.data.error}</p>`;
+                const errorMessage = result.error || result.data?.error;
+                if (errorMessage) {
+                    htmlOutput += `<p class="error">Error: ${errorMessage}</p>`;
+                } else if (result.data?.data?.length > 0){
+                    const dataPoint = result.data.data[0];
+                    htmlOutput += `
+                        <p>Value: ${dataPoint.v} ${result.data.metadata?.units || ''}</p>
+                        <p>Time: ${dataPoint.t}</p>`;
                 } else {
-                    if (result.data && result.data.data && result.data.data.length > 0) {
-                        const dataPoint = result.data.data[0];
-                        htmlOutput += `
-                            <p>Value: ${dataPoint.v} ${result.data.metadata?.units || ''}</p>
-                            <p>Time: ${dataPoint.t}</p>`;
-                    } else {
-                        htmlOutput += `<p>No data available</p>`;
-                    }
+                    htmlOutput += `<p>No data available</p>`;
                 }
 
                 htmlOutput += `</div>`;
