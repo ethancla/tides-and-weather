@@ -1,7 +1,38 @@
-function fetchTideData(stationID) {
-    // const url = 'http://127.0.0.1:5000/api';
-    const url = 'https://hackdavis25.onrendor.com/api';
+// const url = 'http://127.0.0.1:5000/api';
+const url = 'https://hackdavis25.onrender.com/api';
+ 
+ document.addEventListener('DOMContentLoaded', () => {
+     const dropdown = document.getElementById("stationSelect");
+ 
+     // Load and populate station dropdown
+     fetch(`${url}/stations`)
+         .then(res => res.json())
+         .then(data => {
+             dropdown.innerHTML = "";
+             data.stations
+                 .filter(s => s.state === 'CA' && s.tidal === true)
+                 .forEach(station => {
+                     const opt = document.createElement("option");
+                     opt.value = station.id;
+                     opt.text = `${station.name} [${station.id}]`;
+                     dropdown.appendChild(opt);
+                 });
+         });
+ 
+     // Autofill textbox when station is selected
+     dropdown.addEventListener("change", e => {
+         document.getElementById("textBox").value = e.target.value;
+     });
+ 
+     // Button click handler
+     document.getElementById("submitBtn").addEventListener("click", () => {
+         const stationID = document.getElementById("textBox").value;
+         fetchTideData(stationID);
+     });
+ });
+ 
 
+function fetchTideData(stationID) {
     const endpoints = [
         { type: 'water-level', name: 'Water Level' },
         { type: 'tide-prediction', name: 'Tide Prediction' },
