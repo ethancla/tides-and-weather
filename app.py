@@ -5,19 +5,24 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-def get_noaa_data(station_id, product):
+def get_noaa_data(station_id, product, date="Latest"):
     api_url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
 
     params = {
         "station": station_id,
         "product": product,
-        "date": "Latest",
+        "date": date,
         "range": 1,
         "datum": "MLLW",
         "units": "metric",
         "format": "json",
         "time_zone": "lst_ldt"
     }
+
+    if product == "predictions":
+        params["interval"] = "h"
+        params["date"] = "today"
+        del params["range"]
 
     response = requests.get(api_url, params=params)
     print(f"Response status: {response.status_code}")

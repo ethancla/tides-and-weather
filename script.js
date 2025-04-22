@@ -1,3 +1,5 @@
+const e = require("express");
+
 // const url = 'http://127.0.0.1:5000/api';
 const url = 'https://hackdavis25.onrender.com/api';
  
@@ -51,15 +53,22 @@ function fetchTideData(stationID) {
 
     Promise.all(fetchPromises)
         .then(responses => {
-            let htmlOutput = `<h2>Station ${stationID} Data</h2>`;
+            let htmlOutput = `<h2 style="font-size: 1.5em;">Station ${stationID} Data</h2>`;
 
             responses.forEach(result => {
                 htmlOutput += `<div class="data-section">
-                    <h3>${result.type}</h3>`;
+                    <h3 style="font-size: 1.25em;">${result.type}</h3>`;
                 
                 if (result.error) {
                     htmlOutput += `<p>No data available</p>`;
-                } else if (result.data?.data?.length > 0){
+                } else if (result.type === 'Tide Prediction' && result.data?.predictions?.length > 0){
+                    htmlOutput += `<table style="margin: 0 auto; font-size: 0.9em;">
+                        <tr><th>Time</th><th>Height (m)</th></tr>`;
+                    result.data.predictions.slice(0, 5).forEach(pred => {
+                        htmlOutput += `<tr><td>${pred.t}</td><td>${pred.v}</td></tr>`;
+                     });
+                     htmlOutput += `</table>`;
+                } else if (result.data?.data?.length > 0) {
                     const dataPoint = result.data.data[0];
                     htmlOutput += `
                         <p>Value: ${dataPoint.v} ${result.data.metadata?.units || ''}</p>
