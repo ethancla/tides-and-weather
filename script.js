@@ -42,7 +42,10 @@ function fetchTideData(stationID) {
     const fetchPromises = endpoints.map(endpoint =>
         fetch(`${url}/${endpoint.type}/${stationID}`)
             .then(response => response.json())
-            .then(data => ({ type: endpoint.name, data: data }))
+            .then(data => {
+                if (data.error) throw new Error(data.error);
+                return { type: endpoint.name, data: data };
+            })
             .catch(error => ({ type: endpoint.name, error: error.message }))
     );
 
@@ -53,10 +56,9 @@ function fetchTideData(stationID) {
             responses.forEach(result => {
                 htmlOutput += `<div class="data-section">
                     <h3>${result.type}</h3>`;
-
-                const errorMessage = result.error || result.data?.error;
-                if (errorMessage) {
-                    htmlOutput += `<p class="error">Error: ${errorMessage}</p>`;
+                
+                if (result.error) {
+                    htmlOutput += `<p>No data available</p>`;
                 } else if (result.data?.data?.length > 0){
                     const dataPoint = result.data.data[0];
                     htmlOutput += `
