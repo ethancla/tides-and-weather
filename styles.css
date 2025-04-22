@@ -1,7 +1,11 @@
-body{
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
   font-family: Arial, sans-serif;
   background-color: hsl(0, 0%, 0%);
-} 
+}
 
 h1{
   color: hsl(199, 92%, 61%);
@@ -17,14 +21,14 @@ h1{
   box-shadow: 5px 5px 15px hsla(0, 0%, 0%, 0.31); 
   position: relative;
   z-index: 2;
-}   
+}
 
 button {
   border: none;
   border-radius: 25px;
   background-color: hsl(0, 0%, 100%);
   padding: 20px;
-}  
+}
 
 button:hover{
   background-color: hsl(71, 74%, 80%);

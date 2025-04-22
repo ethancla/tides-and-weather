@@ -1,7 +1,11 @@
-body{
-    font-family: Arial, sans-serif;
-    background-color: hsl(0, 0%, 0%);
-} 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  background-color: hsl(0, 0%, 0%);
+}
 
 h1{
     color: hsl(199, 92%, 61%);
@@ -10,8 +14,9 @@ h1{
 form{
     background-color: hsl(0, 0%, 11%);
     text-align: center;
+    width: 100%;
     max-width: 350px; 
-    margin: auto;
+    margin: 0 auto;
     padding: 25px;
     border-radius: 10px;
     box-shadow: 5px 5px 15px hsla(0, 0%, 0%, 0.31); 
@@ -109,6 +114,18 @@ button:hover{
     animation: transition 1s ease-in-out forwards;
   } 
 
+  #stationSelect {
+    width: 70%;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+    background-color: #1a1a1a;
+    color: white;
+    border: 2px solid hsla(0, 0%, 0%, 0.811);
+  }
 
   @keyframes transition {
     from{
