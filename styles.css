@@ -23,15 +23,49 @@ h1{
   z-index: 2;
 }
 
+#box{
+  background-color: hsl(0, 0%, 11%);
+  text-align: center;
+  max-width: 350px; 
+  margin: auto;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px hsla(0, 0%, 0%, 0.31); 
+  position: relative;
+  z-index: 2;
+}   
+
+.description {
+color: hsl(0, 0%, 82%);
+font-size: 1em;
+margin-bottom: 20px;
+line-height: 1.4em;
+text-align: center;
+}
+
+#external {
+text-decoration: none;
+color: rgb(59, 59, 59);
+font-weight: bold;
+}
+
 button {
   border: none;
   border-radius: 25px;
-  background-color: hsl(0, 0%, 100%);
-  padding: 20px;
+  background-color: hsl(199, 92%, 61%);
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
 }
 
 button:hover{
-  background-color: hsl(71, 74%, 80%);
+  background-color: hsl(199, 92%, 75%);
 }
 
 .navbar {
@@ -59,12 +93,12 @@ button:hover{
 
 .navbar nav ul li a {
   text-decoration: none;
-  color: yellow;
+  color: hsl(199, 92%, 61%);
   font-weight: bold;
 }
 
 .navbar nav ul li a:hover {
-  color: lightyellow;
+  color: hsl(199, 92%, 75%);
 }
 
 .container {
@@ -77,6 +111,10 @@ button:hover{
   color: hsl(199, 92%, 61%);
   animation: transition 1s ease-in-out forwards;
 } 
+
+.logo-title img {
+  animation: transition 1s ease-in-out forwards, waveMotion 2s ease-in-out infinite;
+}
 
 #checker{
   text-decoration: none;
@@ -103,4 +141,10 @@ button:hover{
       transform: translateX(0px);
       opacity: 1;
   }
+}
+
+@keyframes waveMotion {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(10px); }
+  100% { transform: translateX(0); }
 }

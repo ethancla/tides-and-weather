@@ -1,10 +1,17 @@
-body, html {
+html {
   margin: 0;
   padding: 0;
   height: 100%;
-  width: 100%;
-  font-family: Arial, sans-serif;
   background-color: hsl(0, 0%, 0%);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: hsl(0, 0%, 0%);
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 h1{
@@ -51,17 +58,18 @@ label{
 
 button{
     margin-top: 15px;
-    background-color: hsl(115, 78%, 62%);
-    color: snow;
+    background-color: hsl(199, 92%, 61%);
+    color: black;
     font-size: 1.5em;
     border: none;
     padding: 10px 15px;
     border-radius: 25px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 } 
 
 button:hover{
-    background-color:  hsl(115, 78%, 72%);
+    background-color:  hsl(199, 92%, 75%);
 } 
 
 #result {
@@ -105,12 +113,12 @@ button:hover{
   
   .navbar nav ul li a {
     text-decoration: none;
-    color: yellow;
+    color: hsl(199, 92%, 61%);
     font-weight: bold;
   }
   
   .navbar nav ul li a:hover {
-    color: lightyellow;
+    color: hsl(199, 92%, 75%);
   }
   
   .container {
@@ -123,6 +131,10 @@ button:hover{
     color: hsl(199, 92%, 61%);
     animation: transition 1s ease-in-out forwards;
   } 
+  
+  .logo-title img {
+    animation: transition 1s ease-in-out forwards, waveMotion 2s ease-in-out infinite;
+  }
 
   #stationSelect {
     width: 70%;
@@ -132,9 +144,14 @@ button:hover{
     margin-bottom: 10px;
     position: relative;
     z-index: 2;
-    background-color: #1a1a1a;
-    color: white;
-    border: 2px solid hsla(0, 0%, 0%, 0.811);
+    background-color: hsl(0, 0%, 24%);
+    color: hsl(0, 0%, 100%);
+    border: 2px solid hsla(0, 0%, 0%, 0.70);
+  }
+
+  #caliSelect {
+    font-size: 1em;
+    color: hsl(0, 0%, 82%);
   }
 
   @keyframes transition {
@@ -147,4 +164,10 @@ button:hover{
         transform: translateX(0px);
         opacity: 1;
     }
+}
+
+@keyframes waveMotion {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(10px); }
+  100% { transform: translateX(0); }
 }
