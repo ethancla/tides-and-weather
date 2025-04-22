@@ -71,7 +71,7 @@ function fetchTideData(stationID) {
                 } else if (result.data?.data?.length > 0) {
                     const dataPoint = result.data.data[0];
                     htmlOutput += `
-                        <p>Value: ${dataPoint.v} ${result.data.metadata?.units || ''}</p>
+                        <p>Value: ${dataPoint.v} ${result.type === "Water Temperature" ? "°C" : result.data.metadata?.units || ''}</p>
                         <p>Time: ${dataPoint.t}</p>`;
                 } else {
                     htmlOutput += `<p>No data available</p>`;
