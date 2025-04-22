@@ -55,6 +55,8 @@ function fetchTideData(stationID) {
         .then(responses => {
             let htmlOutput = `<h2 style="font-size: 1.5em;">Station ${stationID} Data</h2>`;
 
+            let temp = null, tide = null, level = null;
+
             responses.forEach(result => {
                 htmlOutput += `<div class="data-section">
                     <h3 style="font-size: 1.25em;">${result.type}</h3>`;
@@ -62,6 +64,7 @@ function fetchTideData(stationID) {
                 if (result.error) {
                     htmlOutput += `<p>No data available</p>`;
                 } else if (result.type === 'Tide Prediction' && result.data?.predictions?.length > 0){
+                    tide = true;
                     htmlOutput += `<table style="margin: 0 auto; font-size: 0.9em;">
                         <tr><th>Time</th><th>Height (m)</th></tr>`;
                     result.data.predictions.slice(0, 5).forEach(pred => {
@@ -70,6 +73,8 @@ function fetchTideData(stationID) {
                      htmlOutput += `</table>`;
                 } else if (result.data?.data?.length > 0) {
                     const dataPoint = result.data.data[0];
+                    if (result.type === 'Water Temperature') tem = parseFloat(dataPoint.v);
+                    if (result.type === 'Water Level') level = parseFloat(dataPoint.v);
                     htmlOutput += `
                         <p>Value: ${dataPoint.v} ${result.type === "Water Temperature" ? "°C" : result.data.metadata?.units || ''}</p>
                         <p>Time: ${dataPoint.t}</p>`;
@@ -79,6 +84,25 @@ function fetchTideData(stationID) {
 
                 htmlOutput += `</div>`;
             });
+
+            let summary = "";
+            if (temp === null && tide === null && level === null) {
+                summary = "No data available. Please use caution if entering the water.";
+            } else if (temp !== null && temp >= 20 && temp <= 26 && tide && level !== null) {
+                summary = "It's a great day to swim. Conditions look ideal.";
+            } else if (temp !== null && temp >= 18 && tide) {
+                summary = "Water is a bit cool, but tide looks safe. Good for a swim.";
+            } else if (temp !== null && level !== null) {
+                summary = "Tide data is missing, but based on temperature and water level, today seems okay.";
+            } else if (tide && level !== null) {
+                summary = "Temperature data is missing. Tide and water level look safe.";
+            } else {
+                summary = "Partial data available. Please swim with caution or check another station.";
+            }
+ 
+            htmlOutput += `<div style="margin-top: 20px; background-color: hsl(0, 0%, 11%); color: hsl(199, 92%, 61%); padding: 15px; border-radius: 10px; box-shadow: 2px 2px 8px hsla(0, 0%, 0%, 0.3); font-size: 1em; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
+                <strong>Swimming Recommendation:</strong><br>${summary}
+            </div>`;
 
             document.getElementById("result").innerHTML = htmlOutput;
         })
